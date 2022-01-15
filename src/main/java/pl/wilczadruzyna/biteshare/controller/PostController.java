@@ -25,7 +25,7 @@ import pl.wilczadruzyna.biteshare.repository.UserRepository;
 import pl.wilczadruzyna.biteshare.service.LocationService;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -72,8 +72,8 @@ public class PostController {
             post = new Post();
             post.setTitle(payload.get("title").asText());
             post.setDescription(payload.get("description").asText());
-            post.setCreationDate(LocalDate.parse(payload.get("creationDate").asText()));
-            post.setExpiryDate(LocalDate.parse(payload.get("expiryDate").asText()));
+            post.setCreationDate(LocalDateTime.parse(payload.get("creationDate").asText()));
+            post.setExpiryDate(LocalDateTime.parse(payload.get("expiryDate").asText()));
             post.setImageUrl(payload.get("imageUrl").asText());
         } else {
             return ResponseEntity.badRequest().build();
@@ -122,8 +122,8 @@ public class PostController {
         if (post != null) {
             post.setTitle(payload.get("title").asText());
             post.setDescription(payload.get("description").asText());
-            post.setCreationDate(LocalDate.parse(payload.get("creationDate").asText()));
-            post.setExpiryDate(LocalDate.parse(payload.get("expiryDate").asText()));
+            post.setCreationDate(LocalDateTime.parse(payload.get("creationDate").asText()));
+            post.setExpiryDate(LocalDateTime.parse(payload.get("expiryDate").asText()));
             post.setImageUrl(payload.get("imageUrl").asText());
         } else {
             return ResponseEntity.badRequest().build();

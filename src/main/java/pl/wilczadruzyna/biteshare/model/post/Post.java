@@ -17,7 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "Post")
 @Table(name = "posts")
@@ -37,9 +37,9 @@ public class Post {
 
     private String description;
 
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
-    private LocalDate expiryDate;
+    private LocalDateTime expiryDate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "destination_id")
