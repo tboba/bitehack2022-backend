@@ -33,19 +33,19 @@ public class PostController {
         this.locationService = locationService;
     }
 
-    @GetMapping(value = "/all")
-    public ResponseEntity<List<PostWithLocation>> getAll() {
-        List<PostWithLocation> posts = repository.findAll().stream().map(post -> {
-            try {
-                return getPostWithDecodedLocation(post);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            return null;
-        }).toList();
-
-        return ResponseEntity.ok(posts);
-    }
+//    @GetMapping(value = "/all")
+//    public ResponseEntity<List<PostWithLocation>> getAll() {
+//        List<PostWithLocation> posts = repository.findAll().stream().map(post -> {
+//            try {
+//                return getPostWithDecodedLocation(post);
+//            } catch (Exception exception) {
+//                exception.printStackTrace();
+//            }
+//            return null;
+//        }).toList();
+//
+//        return ResponseEntity.ok(posts);
+//    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PostWithLocation> get(@PathVariable("id") long id) throws IOException, InterruptedException, ApiException {
@@ -74,20 +74,24 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(params = {"category", "!author"})
-    public ResponseEntity<Page<Post>> findPaginated(Long category, Pageable pageable) {
-        return ResponseEntity.ok(repository.findPostsByPostCategoryId(category, pageable));
+    @GetMapping
+    public ResponseEntity<List<Post>> getAll() {
+        return ResponseEntity.ok(repository.findAll());
     }
+//    @GetMapping(params = {"category", "!author"})
+//    public ResponseEntity<Page<Post>> findPaginated(Long category, Pageable pageable) {
+//        return ResponseEntity.ok(repository.findPostsByPostCategoryId(category, pageable));
+//    }
 
-    @GetMapping(params = {"!category", "author"})
-    public ResponseEntity<Page<Post>> findByAuthor(Long author, Pageable pageable) {
-        return ResponseEntity.ok(repository.findPostsByAuthorId(author, pageable));
-    }
+//    @GetMapping(params = {"!category", "author"})
+//    public ResponseEntity<Page<Post>> findByAuthor(Long author, Pageable pageable) {
+//        return ResponseEntity.ok(repository.findPostsByAuthorId(author, pageable));
+//    }
 
-    @GetMapping(params = {"category", "author"})
-    public ResponseEntity<Page<Post>> findByAuthorAndCategory(Long category, Long author, Pageable pageable) {
-        return ResponseEntity.ok(repository.findPostsByAuthorIdAndPostCategoryId(author, category, pageable));
-    }
+//    @GetMapping(params = {"category", "author"})
+//    public ResponseEntity<Page<Post>> findByAuthorAndCategory(Long category, Long author, Pageable pageable) {
+//        return ResponseEntity.ok(repository.findPostsByAuthorIdAndPostCategoryId(author, category, pageable));
+//    }
 
     private PostWithLocation getPostWithDecodedLocation(Post post) throws IOException, InterruptedException, ApiException {
         Location location = post.getLocation();
