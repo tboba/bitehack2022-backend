@@ -8,6 +8,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import pl.wilczadruzyna.biteshare.model.user.User;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,7 +41,7 @@ public class Post {
 
     private LocalDate expiryDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "destination_id")
     private Location location;
 
