@@ -3,14 +3,7 @@ package pl.wilczadruzyna.biteshare.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.wilczadruzyna.biteshare.model.user.User;
 import pl.wilczadruzyna.biteshare.repository.UserRepository;
 
@@ -46,10 +39,20 @@ public class UserController {
         return ResponseEntity.ok(repository.save(user));
     }
 
+    @PostMapping(value = "/{id}", params = "rate")
+    public ResponseEntity<User> addRating(@PathVariable("id") Long id, Integer rate) {
+        User u = repository.findUserById(id);
+        u.addRating(rate);
+        repository.save(u);
+        return ResponseEntity.ok(u);
+    }
+
     @PatchMapping
     public ResponseEntity<User> patch(@RequestBody User user) {
         return ResponseEntity.ok(repository.save(user));
     }
+
+
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
@@ -62,5 +65,7 @@ public class UserController {
         repository.deleteAll();
         return ResponseEntity.ok().build();
     }
+
+
 
 }
