@@ -27,8 +27,18 @@ public class PostController {
         return ResponseEntity.ok(repository.findAll(pageable));
     }
 
-    @GetMapping(params = "category")
-    public ResponseEntity<Page<Post>> findPaginated(@RequestParam Long category, Pageable pageable) {
+    @GetMapping(params = {"category", "!author"})
+    public ResponseEntity<Page<Post>> findPaginated(Long category, Pageable pageable) {
         return ResponseEntity.ok(repository.findPostsByPostCategoryId(category, pageable));
+    }
+
+    @GetMapping(params = {"!category", "author"})
+    public ResponseEntity<Page<Post>> findByAuthor(Long author, Pageable pageable) {
+        return ResponseEntity.ok(repository.findPostsByAuthorId(author, pageable));
+    }
+
+    @GetMapping(params = {"category", "author"})
+    public ResponseEntity<Page<Post>> findByAuthorAndCategory(Long category, Long author, Pageable pageable) {
+        return ResponseEntity.ok(repository.findPostsByAuthorIdAndPostCategoryId(author, category, pageable));
     }
 }
