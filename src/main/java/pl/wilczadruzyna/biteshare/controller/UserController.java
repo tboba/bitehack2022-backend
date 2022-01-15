@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,33 +26,38 @@ public class UserController {
         this.repository = repository;
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") long id) {
-        return ResponseEntity.ok(repository.findUserById(id));
-    }
-
     @GetMapping(value = "/all")
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<User>> getAll() {
         return ResponseEntity.ok(repository.findAll());
     }
 
-    @GetMapping(value = "/custom")
-    public ResponseEntity<Page<User>> getUsersPaginated(Pageable pageable) {
+    @GetMapping
+    public ResponseEntity<Page<User>> getAllPaginated(Pageable pageable) {
         return ResponseEntity.ok(repository.findAll(pageable));
     }
 
-    @PostMapping(value = "/add")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<User> get(@PathVariable("id") long id) {
+        return ResponseEntity.ok(repository.findUserById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<User> add(@RequestBody User user) {
+        return ResponseEntity.ok(repository.save(user));
+    }
+
+    @PatchMapping
+    public ResponseEntity<User> patch(@RequestBody User user) {
         return ResponseEntity.ok(repository.save(user));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteAll(@PathVariable("id") long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") long id) {
         repository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/all")
+    @DeleteMapping
     public ResponseEntity<?> deleteAll() {
         repository.deleteAll();
         return ResponseEntity.ok().build();
