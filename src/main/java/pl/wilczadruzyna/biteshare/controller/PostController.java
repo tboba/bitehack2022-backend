@@ -119,14 +119,28 @@ public class PostController {
     public ResponseEntity<Post> patch(@RequestBody JsonNode payload) throws IOException, InterruptedException, ApiException {
         Post post = postRepository.findPostByTitle(payload.get("title").asText());
 
-        if (post != null) {
-            post.setTitle(payload.get("title").asText());
-            post.setDescription(payload.get("description").asText());
-            post.setCreationDate(LocalDateTime.parse(payload.get("creationDate").asText()));
-            post.setExpiryDate(LocalDateTime.parse(payload.get("expiryDate").asText()));
-            post.setImageUrl(payload.get("imageUrl").asText());
-        } else {
+        if (post == null) {
             return ResponseEntity.badRequest().build();
+        }
+
+        if (payload.get("title") != null) {
+            post.setTitle(payload.get("title").asText());
+        }
+
+        if (payload.get("description") != null) {
+            post.setDescription(payload.get("description").asText());
+        }
+
+        if (payload.get("creationDate") != null) {
+            post.setCreationDate(LocalDateTime.parse(payload.get("creationDate").asText()));
+        }
+
+        if (payload.get("expiryDate") != null) {
+            post.setExpiryDate(LocalDateTime.parse(payload.get("expiryDate").asText()));
+        }
+
+        if (payload.get("imageUrl") != null) {
+            post.setImageUrl(payload.get("imageUrl").asText());
         }
 
         if (payload.get("postCategory") != null && payload.get("postCategory").get("name") != null) {
