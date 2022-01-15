@@ -11,7 +11,13 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public record LocationService(GeocodeService geocodeService) {
+public class LocationService {
+
+    private final GeocodeService geocodeService;
+
+    public LocationService(GeocodeService geocodeService) {
+        this.geocodeService = geocodeService;
+    }
 
     public String findExactCityFrom(double latitude, double longitude) throws IOException, InterruptedException, ApiException {
         GeoApiContext context = geocodeService.getVendor();
