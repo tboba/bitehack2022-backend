@@ -1,12 +1,16 @@
 package pl.wilczadruzyna.biteshare.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.wilczadruzyna.biteshare.model.post.Post;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table
@@ -15,6 +19,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "ownedPosts" })
 public class User {
 
     @Id
@@ -26,5 +31,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType type;
 
-    // TODO: Add list of posts to User
+    @OneToMany
+    @JoinColumn(name = "author_id")
+    @JsonProperty("ownedPosts")
+    private Set<Post> ownedPosts;
 }
