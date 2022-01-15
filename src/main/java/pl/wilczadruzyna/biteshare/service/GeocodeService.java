@@ -19,7 +19,7 @@ public class GeocodeService {
     }
 
     private void initializeVendor() {
-        String googleApiKey = System.getenv("bitehack-googlekey");
+        String googleApiKey = System.getenv("BITEHACK_GKEY");
         context = new GeoApiContext.Builder()
                 .apiKey(googleApiKey)
                 .connectTimeout(30, TimeUnit.SECONDS)
