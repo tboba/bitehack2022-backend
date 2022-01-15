@@ -21,9 +21,9 @@ public class LocationService {
 
     public String findExactCityFrom(double latitude, double longitude) throws IOException, InterruptedException, ApiException {
         GeoApiContext context = geocodeService.getVendor();
-        GeocodingResult[] result = GeocodingApi.reverseGeocode(context, new LatLng(latitude, longitude)).resultType(AddressType.LOCALITY).await();
+        GeocodingResult[] result = GeocodingApi.reverseGeocode(context, new LatLng(latitude, longitude))
+                .resultType(AddressType.LOCALITY).awaitIgnoreError();
 
-        context.shutdown();
         String receivedAddress = result[0].formattedAddress;
         return receivedAddress.split(",")[0];
     }
