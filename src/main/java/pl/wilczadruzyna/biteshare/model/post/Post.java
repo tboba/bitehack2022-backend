@@ -28,7 +28,8 @@ public class Post {
 
     private String imageUrl;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
 
     // TODO: author, location from Google API
