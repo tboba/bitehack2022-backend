@@ -9,7 +9,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.wilczadruzyna.biteshare.model.post.Post;
 
-import javax.persistence.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -40,8 +51,8 @@ public class User {
     private Set<Post> ownedPosts;
 
     @ElementCollection
-    @CollectionTable(name = "ratings", joinColumns = @JoinColumn(name = "id")) // 2
-    @Column(name = "ratingHistory") // 3
+    @CollectionTable(name = "ratings", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "ratingHistory")
     private List<Integer> ratingHistory;
 
     private BigDecimal ratingAverage;
