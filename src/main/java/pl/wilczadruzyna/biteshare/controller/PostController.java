@@ -38,6 +38,11 @@ public class PostController {
         return ResponseEntity.ok(repository.findAll());
     }
 
+    @GetMapping
+    public ResponseEntity<Page<Post>> getAllPaginated(Pageable pageable) {
+        return ResponseEntity.ok(repository.findAll(pageable));
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<Post> get(@PathVariable("id") long id) throws IOException, InterruptedException, ApiException {
         return ResponseEntity.ok(repository.getById(id));
