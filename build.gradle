@@ -6,8 +6,8 @@ plugins {
 group 'pl.wilczadruzyna'
 version '1.0.0-SNAPSHOT'
 
-sourceCompatibility = '1.11'
-targetCompatibility = '1.11'
+sourceCompatibility = '1.17'
+targetCompatibility = '1.17'
 
 repositories {
     mavenCentral()
