@@ -1,5 +1,6 @@
 package pl.wilczadruzyna.biteshare.controller;
 
+import com.google.maps.errors.ApiException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.wilczadruzyna.biteshare.model.post.Location;
 import pl.wilczadruzyna.biteshare.model.post.Post;
+import pl.wilczadruzyna.biteshare.model.post.PostWithLocation;
 import pl.wilczadruzyna.biteshare.repository.PostRepository;
+import pl.wilczadruzyna.biteshare.service.LocationService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,24 +26,30 @@ import java.util.List;
 public class PostController {
 
     private final PostRepository repository;
+    private final LocationService locationService;
 
-    public PostController(PostRepository repository) {
+    public PostController(PostRepository repository, LocationService locationService) {
         this.repository = repository;
+        this.locationService = locationService;
     }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<Post>> getAll() {
-        return ResponseEntity.ok(repository.findAll());
-    }
+    public ResponseEntity<List<PostWithLocation>> getAll() {
+        List<PostWithLocation> posts = repository.findAll().stream().map(post -> {
+            try {
+                return getPostWithDecodedLocation(post);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return null;
+        }).toList();
 
-    @GetMapping
-    public ResponseEntity<Page<Post>> getAllPaginated(Pageable pageable) {
-        return ResponseEntity.ok(repository.findAll(pageable));
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Post> get(@PathVariable("id") long id) {
-        return ResponseEntity.ok(repository.getById(id));
+    public ResponseEntity<PostWithLocation> get(@PathVariable("id") long id) throws IOException, InterruptedException, ApiException {
+        return ResponseEntity.ok(getPostWithDecodedLocation(repository.getById(id)));
     }
 
     @PostMapping
@@ -62,6 +72,7 @@ public class PostController {
     public ResponseEntity<?> deleteAll() {
         repository.deleteAll();
         return ResponseEntity.ok().build();
+    }
 
     @GetMapping(params = {"category", "!author"})
     public ResponseEntity<Page<Post>> findPaginated(Long category, Pageable pageable) {
@@ -76,5 +87,11 @@ public class PostController {
     @GetMapping(params = {"category", "author"})
     public ResponseEntity<Page<Post>> findByAuthorAndCategory(Long category, Long author, Pageable pageable) {
         return ResponseEntity.ok(repository.findPostsByAuthorIdAndPostCategoryId(author, category, pageable));
+    }
+
+    private PostWithLocation getPostWithDecodedLocation(Post post) throws IOException, InterruptedException, ApiException {
+        Location location = post.getLocation();
+        String decodedLocation = locationService.findExactCityFrom(location.getLatitude(), location.getLongitude());
+        return PostWithLocation.of(post, decodedLocation);
     }
 }
