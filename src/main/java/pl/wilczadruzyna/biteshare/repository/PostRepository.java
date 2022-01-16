@@ -23,4 +23,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findPostsByAuthorId(Long id, Pageable pageable);
 
     Page<Post> findPostsByAuthorIdAndPostCategoryId(Long authorId, Long categoryId, Pageable pageable);
+
+//    Page<Post> (String startsWith);
+    Page<Post> findPostsByTitleContaining(String title, Pageable pageable);
+    Page<Post> findPostsByAuthorIdAndTitleContaining(Long authorId, String title, Pageable pageable);
+    Page<Post> findPostsByPostCategoryIdAndTitleContaining(Long categoryId, String title, Pageable pageable);
+    Page<Post> findPostsByPostCategoryIdAndAuthorIdAndTitleContaining(Long categoryId, Long authorId, String title, Pageable pageable);
 }
