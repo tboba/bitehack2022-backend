@@ -1,8 +1,8 @@
-INSERT INTO user (name, type) VALUES
-                                    ('TestUser1', 'PRIVATE'),
-                                    ('TestUser2', 'PRIVATE'),
-                                    ('TestUser3', 'PRIVATE'),
-                                    ('TestUser3', 'RESTAURANT');
+INSERT INTO user (name, type, phone_number, email) VALUES
+                                    ('TestUser1', 'PRIVATE', '123456789', 'test1@test.com'),
+                                    ('TestUser2', 'PRIVATE', '223456789', 'test2@test.com'),
+                                    ('TestUser3', 'PRIVATE', '323456789', 'test3@test.com'),
+                                    ('TestUser3', 'RESTAURANT', '423456789', 'test4@test.com');
 
 INSERT INTO post_categories (name) VALUES ('pieczywo'),
                                      ('przyprawy'),

@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -56,6 +57,11 @@ public class User {
     private List<Integer> ratingHistory;
 
     private BigDecimal ratingAverage;
+
+    private String phoneNumber;
+
+    @Email
+    private String email;
 
     public void addRating(Integer rating) {
         ratingHistory.add(rating);
