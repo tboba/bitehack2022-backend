@@ -206,18 +206,38 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(params = {"category", "!author"})
+    @GetMapping(params = {"category", "!author", "!name"})
     public ResponseEntity<Page<Post>> findPaginated(Long category, Pageable pageable) {
         return ResponseEntity.ok(postRepository.findPostsByPostCategoryId(category, pageable));
     }
 
-    @GetMapping(params = {"!category", "author"})
+    @GetMapping(params = {"!category", "author", "!name"})
     public ResponseEntity<Page<Post>> findByAuthor(Long author, Pageable pageable) {
         return ResponseEntity.ok(postRepository.findPostsByAuthorId(author, pageable));
     }
 
-    @GetMapping(params = {"category", "author"})
+    @GetMapping(params = {"category", "author", "!name"})
     public ResponseEntity<Page<Post>> findByAuthorAndCategory(Long category, Long author, Pageable pageable) {
         return ResponseEntity.ok(postRepository.findPostsByAuthorIdAndPostCategoryId(author, category, pageable));
+    }
+
+    @GetMapping(params = {"!category", "!author", "name"})
+    public ResponseEntity<Page<Post>> getByName(String name, Pageable pageable) {
+        return ResponseEntity.ok(postRepository.findPostsByTitleContaining(name, pageable));
+    }
+
+    @GetMapping(params = {"!category", "author", "name"})
+    public ResponseEntity<Page<Post>> getByNameAndAuthor(Long author, String name, Pageable pageable) {
+        return ResponseEntity.ok(postRepository.findPostsByAuthorIdAndTitleContaining(author, name, pageable));
+    }
+
+    @GetMapping(params = {"category", "!author", "name"})
+    public ResponseEntity<Page<Post>> getByNameAndCategory(Long category, String name, Pageable pageable) {
+        return ResponseEntity.ok(postRepository.findPostsByPostCategoryIdAndTitleContaining(category, name, pageable));
+    }
+
+    @GetMapping(params = {"category", "author", "name"})
+    public ResponseEntity<Page<Post>> getByNameAndCategoryAndAuthor(Long category, Long author, String name, Pageable pageable) {
+        return ResponseEntity.ok(postRepository.findPostsByPostCategoryIdAndAuthorIdAndTitleContaining(category, author, name, pageable));
     }
 }
