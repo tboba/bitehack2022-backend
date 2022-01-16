@@ -1,2 +1,2 @@
 # bitehack2022-backend
-Bajthaczek | Backend
+A backend side for the BITEShare, a project for BITEhack2022 hackathon.
